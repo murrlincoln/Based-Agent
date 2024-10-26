@@ -22,7 +22,7 @@ class TwitterBot:
         try:
             tweet = self.api.update_status(content)
             return f"Successfully posted tweet with ID: {tweet.id}"
-        except tweepy.TweepError as e:
+        except tweepy.TweepException as e:
             return f"Error posting tweet: {str(e)}"
 
     def read_mentions(self, count: int = 10) -> List[Dict]:
@@ -43,7 +43,7 @@ class TwitterBot:
                 'user': mention.user.screen_name,
                 'created_at': mention.created_at
             } for mention in mentions]
-        except tweepy.TweepError as e:
+        except tweepy.TweepException as e:
             return [{'error': str(e)}]
 
     def reply_to_tweet(self, tweet_id: str, content: str) -> str:
@@ -68,7 +68,7 @@ class TwitterBot:
                 auto_populate_reply_metadata=True
             )
             return f"Successfully replied to tweet {tweet_id}"
-        except tweepy.TweepError as e:
+        except tweepy.TweepException as e:
             return f"Error replying to tweet: {str(e)}"
 
     def search_tweets(self, query: str, count: int = 10) -> List[Dict]:
@@ -90,5 +90,5 @@ class TwitterBot:
                 'user': tweet.user.screen_name,
                 'created_at': tweet.created_at
             } for tweet in tweets]
-        except tweepy.TweepError as e:
+        except tweepy.TweepException as e:
             return [{'error': str(e)}]
