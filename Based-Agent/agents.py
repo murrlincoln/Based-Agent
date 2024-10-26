@@ -119,8 +119,11 @@ def get_balance(asset_id):
     Returns:
         str: A message showing the current balance of the specified asset
     """
-    balance = agent_wallet.balance(asset_id)
-    return f"Current balance of {asset_id}: {balance}"
+    try:
+        balance = agent_wallet.balance(asset_id)
+        return f"Current balance of {asset_id}: {balance}"
+    except Exception as e:
+        return f"Error fetching balance for {asset_id}: {str(e)}"
 
 # Function to request ETH from the faucet (testnet only)
 def request_eth_from_faucet():
@@ -259,34 +262,35 @@ def create_register_contract_method_args(base_name: str, address_id: str, is_mai
     Returns:
         dict: Formatted arguments for the register contract method
     """
-    w3 = Web3()
-    
-    resolver_contract = w3.eth.contract(abi=l2_resolver_abi)
-    
-    name_hash = w3.ens.namehash(base_name)
-    
-    address_data = resolver_contract.encode_abi(
-        "setAddr",
-        args=[name_hash, address_id]
-    )
-    
-    name_data = resolver_contract.encode_abi(
-        "setName",
-        args=[name_hash, base_name]
-    )
-    
-    register_args = {
-        "request": [
-            base_name.replace(".base.eth" if is_mainnet else ".basetest.eth", ""),
-            address_id,
-            "31557600",  # 1 year in seconds
-            L2_RESOLVER_ADDRESS_MAINNET if is_mainnet else L2_RESOLVER_ADDRESS_TESTNET,
-            [address_data, name_data],
-            True
-        ]
-    }
-    
-    return register_args
+    try:
+        w3 = Web3()
+        resolver_contract = w3.eth.contract(abi=l2_resolver_abi)
+        name_hash = w3.ens.namehash(base_name)
+        
+        address_data = resolver_contract.encode_abi(
+            "setAddr",
+            args=[name_hash, address_id]
+        )
+        
+        name_data = resolver_contract.encode_abi(
+            "setName",
+            args=[name_hash, base_name]
+        )
+        
+        register_args = {
+            "request": [
+                base_name.replace(".base.eth" if is_mainnet else ".basetest.eth", ""),
+                address_id,
+                "31557600",  # 1 year in seconds
+                L2_RESOLVER_ADDRESS_MAINNET if is_mainnet else L2_RESOLVER_ADDRESS_TESTNET,
+                [address_data, name_data],
+                True
+            ]
+        }
+        
+        return register_args
+    except Exception as e:
+        raise ValueError(f"Error creating registration arguments for {base_name}: {str(e)}")
 
 # Function to register a basename
 def register_basename(basename: str, amount: float = 0.002):
@@ -300,16 +304,16 @@ def register_basename(basename: str, amount: float = 0.002):
     Returns:
         str: Status message about the basename registration
     """
-    address_id = agent_wallet.default_address.address_id
-    is_mainnet = agent_wallet.network_id == "base-mainnet"
-
-    suffix = ".base.eth" if is_mainnet else ".basetest.eth"
-    if not basename.endswith(suffix):
-        basename += suffix
-
-    register_args = create_register_contract_method_args(basename, address_id, is_mainnet)
-
     try:
+        address_id = agent_wallet.default_address.address_id
+        is_mainnet = agent_wallet.network_id == "base-mainnet"
+
+        suffix = ".base.eth" if is_mainnet else ".basetest.eth"
+        if not basename.endswith(suffix):
+            basename += suffix
+
+        register_args = create_register_contract_method_args(basename, address_id, is_mainnet)
+
         contract_address = (
             BASENAMES_REGISTRAR_CONTROLLER_ADDRESS_MAINNET if is_mainnet
             else BASENAMES_REGISTRAR_CONTROLLER_ADDRESS_TESTNET
@@ -327,6 +331,8 @@ def register_basename(basename: str, amount: float = 0.002):
         return f"Successfully registered basename {basename} for address {address_id}"
     except ContractLogicError as e:
         return f"Error registering basename: {str(e)}"
+    except ValueError as e:
+        return str(e)
     except Exception as e:
         return f"Unexpected error registering basename: {str(e)}"
 
@@ -511,5 +517,6 @@ registrar_abi = [
 #         my_new_function,
 #     ],
 # )
+
 
 
