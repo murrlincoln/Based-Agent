@@ -28,7 +28,7 @@ Imagine an AI agent that not only interacts with the blockchain but does so crea
 
 ### 1️⃣ Prerequisites
 - Python 3.7+
-- Replit Core Account (optional, but recommended for easy setup).  Contact sales@replit.com for a free uppgrade (just mention coinbase)
+- Replit Core Account (optional, but recommended for easy setup).  To apply for a Coinbase Community sponsorship of Replit Core, send an email to kevin.leffew@coinbase.com
 
 ### 2️⃣ API Configuration
 Add your secrets to Replit's Secret Manager or set them as environment variables:
