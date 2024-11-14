@@ -1,16 +1,16 @@
 # 🔵 Based Agent
 
-An experimental playground for autonomous onchain interactions. 
+An experimental playground for autonomous onchain interactions.
 
 ## Introduction
 
-Based Agent helps LLM agents directly interact with the blockchain, built on top of the [Coinbase Developer Platform (CDP)](https://cdp.coinbase.com/) and OpenAI's [Swarm](https://github.com/openai/swarm). 
+Based Agent helps LLM agents directly interact with the blockchain, built on top of the [Coinbase Developer Platform (CDP)](https://cdp.coinbase.com/) and OpenAI's [Swarm](https://github.com/openai/swarm).
 
 ### Key Features
 
 - **Autonomous execution**: The agent thinks, decides, and acts onchain autonomously.
 - **Token deployement**: Create and manage ERC-20 tokens.
-- **NFT Deployment**: Deploy and mint NFTs. 
+- **NFT Deployment**: Deploy and mint NFTs.
 - **Asset transfers**: Transfer assets between addresses without manual intervention.
 - **Balance checks**: Keep tabs on wallet balances.
 - **ETH faucet requests**: Automatically request testnet ETH when needed.
@@ -27,25 +27,36 @@ Imagine an AI agent that not only interacts with the blockchain but does so crea
 ## Get Started in Minutes!
 
 ### 1️⃣ Prerequisites
-- Python 3.7+
-- Replit Core Account (optional, but recommended for easy setup).  Contact sales@replit.com for a free uppgrade (just mention coinbase)
 
-### 2️⃣ API Configuration
+- Python 3.7+
+- Replit Core Account (optional, but recommended for easy setup). Contact sales@replit.com for a free upgrade (just mention Coinbase).
+
+### 2️⃣ Install Dependencies
+
+Run the following command to install the dependencies, including the `swarm` package from GitHub:
+
+```bash
+pip install poetry
+pip install git+https://github.com/openai/swarm.git
+poetry install
+```
+
+### 3️⃣ API Configuration
+
 Add your secrets to Replit's Secret Manager or set them as environment variables:
+
 - `CDP_API_KEY_NAME`: Your CDP API key name.
 - `CDP_PRIVATE_KEY`: Your CDP private key.
 - `OPENAI_API_KEY`: Your OpenAI API key.
 
 You can get the Coinbase Developer Platform API key here: https://portal.cdp.coinbase.com/
-And the OpenAI key here: https://platform.openai.com/api-keys (note you will need to have a paid account)
+And the OpenAI key here: https://platform.openai.com/api-keys (note you will need to have a paid account).
 
-### 3️⃣ Running the Agent
+### 4️⃣ Running the Agent
 
-After adding your API Keys to the Secrets pane, you start the agent by pressing the green "▶ Run" Button at the top of the editor
+After adding your API keys to the Secrets pane, start the agent by pressing the green "▶ Run" Button at the top of the editor.
 
-![image](image.png)
-
-Alternatively, you can start the based agent manually by navigating to the Replit shell and running:
+Alternatively, you can start the Based Agent manually by navigating to the Replit shell and running:
 
 ```bash
 python run.py
@@ -156,4 +167,3 @@ Happy Building! 👩‍💻👨‍💻
 ---
 
 *DISCLAIMER HERE?*
-
